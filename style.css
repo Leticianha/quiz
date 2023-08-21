@@ -1,0 +1,93 @@
+@font-face {
+    font-family: 'raleway';
+    src: url(Raleway-VariableFont_wght.ttf);
+}
+
+body {
+    font-family:'raleway';
+    background-color: rgba(132, 82, 224, 0.427);
+    margin: 0;
+    padding: 0;
+}
+
+.quiz-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    height: 707px;
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#question-image {
+    max-width: 75%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+#options {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+}
+
+#options li {
+    width: 48%; 
+    margin-bottom: 18px;
+}
+
+#options button {
+    font-family: 'raleway';
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #8452e0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; 
+}
+
+#options button:hover {
+    background-color: #7923c9;
+}
+
+#result {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    font-family: 'raleway';
+}
+
+#restartQuiz {
+    width: 144px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'raleway';
+    font-size: 18px;
+    background-color: #7923c9;
+    color: white;
+    font-size: 18px;
+    box-shadow: 2px 2px 2px #00000066;
+}
+
+#restartQuiz:hover {
+    background-color:#714aba ;
+}

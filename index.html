@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a4e1ef735b.js" crossorigin="anonymous"></script>
+    <title>Quiz</title>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <h1>Quiz </h1>
+        <div id="question-container">
+            <p id="question">Pergunta 1: De quem é a famosa frase “Penso, logo existo”?</p>
+            <img id="question-image" src="pergunta1.jpg" alt="Imagem da pergunta 1">
+        </div>
+        <ul id="options">
+            <li><button onclick="checkAnswer('Platão')">a) Platão</button></li>
+            <li><button onclick="checkAnswer('Galileu Galilei')">b) Galileu Galilei</button></li>
+            <li><button onclick="checkAnswer('Descartes')">c) Descartes</button></li>
+            <li><button onclick="checkAnswer('Sócrates')">d) Sócrates</button></li>
+        </ul>
+        <p id="result"></p>
+         <div class="restart-button">
+        <button id="restartQuiz">Reiniciar o Quiz</button>
+    </div>
+    </div>
+
+   
+    
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let chances = 2;
+
+        const questions = [
+            {
+                question: "De quem é a famosa frase “Penso, logo existo”?",
+                options: ["Platão", "Galileu Galilei", "Descartes", "Sócrates"],
+                answer: "Descartes",
+                imageSrc: "filosofo.png"
+            },
+            {
+                question: "Em que ordem surgiram os modelos atômicos?",
+                options: ["Rutherford-Bohr, Rutherford, Thomson, Dalton", "Dalton, Thomson, Rutherford, Rutherford-Bohr.", "Thomson, Dalton, Rutherford, Rutherford-Bohr", "Rutherford-Bohr, Rutherford, Thomson, Dalton"],
+                answer: "Dalton, Thomson, Rutherford, Rutherford-Bohr.",
+                imageSrc: "modelos atomicos.png"
+            },
+            {
+                question: "Quem pintou 'Guernica'",
+                options: ["Tarsila do Amaral", "Salvador Dalí", "Paul Cézanne", "Pablo Picasso"],
+                answer: "Pablo Picasso",
+                imageSrc: "guernica.png"
+            },
+            {
+                question: " Qual destes países é transcontinental?",
+                options: [" Marrocos", "Groenlândia", "Rússia", "Tanzânia"],
+                answer: "Rússia",
+                imageSrc: "paises.png"
+            },
+            {
+                question: "Quais os principais autores do Barroco no Brasil?",
+                options: ["Padre Antônio Vieira, Padre Manuel de Melo e Gregório de Matos", "Gregório de Matos, Bento Teixeira e Manuel Botelho de Oliveira", "Miguel de Cervantes, Gregório de Matos e Danthe Alighieri", "Álvares de Azevedo, Gregório de Matos e Bento Teixeira"],
+                answer: "Gregório de Matos, Bento Teixeira e Manuel Botelho de Oliveira",
+                imageSrc: "barroco.png"
+            }
+        ];
+
+        function displayQuestion() {
+            const questionElement = document.getElementById("question");
+            const questionImageElement = document.getElementById("question-image");
+            const optionsElement = document.getElementById("options");
+
+            const currentQuestionObj = questions[currentQuestion];
+            questionElement.innerHTML = `Pergunta ${currentQuestion + 1}: ${currentQuestionObj.question}`;
+            questionImageElement.src = currentQuestionObj.imageSrc;
+
+            optionsElement.innerHTML = "";
+
+            currentQuestionObj.options.forEach((option, index) => {
+        const li = document.createElement("li");
+
+        const button = document.createElement("button");
+        button.innerHTML = `<i class="fas ${getIconClass(index)}"></i> ${option}`;
+        button.onclick = () => checkAnswer(option);
+
+        li.appendChild(button);
+        optionsElement.appendChild(li);
+    });
+        }
+
+        function getIconClass(index) {
+    const icons = ["fa-square", "fa-play", "fa-circle", "fa-star"];
+    return icons[index];
+}
+
+        function checkAnswer(selectedOption) {
+            if (selectedOption === questions[currentQuestion].answer) {
+                score += 10;
+                document.getElementById("result").textContent = "Resposta correta! Pontuação: " + score;
+                nextQuestion();
+            } else {
+                chances--;
+                document.getElementById("result").textContent = "Resposta incorreta! Chances restantes: " + chances;
+                if (chances === 0) {
+                    gameOver();
+                }
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                displayQuestion();
+                document.getElementById("result").textContent = "";
+            } else {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            document.getElementById("question").textContent = "Quiz encerrado!";
+            document.getElementById("options").innerHTML = "";
+            document.getElementById("result").textContent = "Pontuação final: " + score;
+        }
+
+        displayQuestion();
+
+        const restartButton = document.getElementById('restartQuiz');
+        restartButton.addEventListener('click', () => {
+            if (confirm('Deseja reiniciar o quiz?')) {
+                currentQuestionIndex = 0;
+                chances = 2;
+                score = 0;
+                loadQuestion();
+            }
+        });
+    </script>
+</body>
+
+</html>
