@@ -24,24 +24,24 @@
             <li><button onclick="checkAnswer('Sócrates')">d) Sócrates</button></li>
         </ul>
         <p id="result"></p>
-         <div class="restart-button">
-        <button id="restartQuiz">Reiniciar o Quiz</button>
-    </div>
+        <div class="restart-button">
+            <button id="restartQuiz">Reiniciar o Quiz</button>
+        </div>
     </div>
 
-   
-    
     <script>
-        let currentQuestion = 0;
-        let score = 0;
-        let chances = 2;
+        // nome das variaveis 
+        let currentQuestion = 0; // controla qual sera a pergunta atual - começa em 0, que conrresponde a primeira pergunta.
+        let score = 0; // controla a pontuação - começa em 0 e aumenta sempre que a resposta estiver certa
+        let chances = 2; // controla quantas chances tem - começa com 0 e vai aumentando conforme o jogador responde corretamente.
 
+        // array quenstions e cada objeto representa uma pergunta com suas opções e resposta correta    
         const questions = [
             {
                 question: "De quem é a famosa frase “Penso, logo existo”?",
-                options: ["Platão", "Galileu Galilei", "Descartes", "Sócrates"],
+                options: ["Platão", "Galileu Galilei", "Descartes", "Sócrates"], // array com as respostas guardadas
                 answer: "Descartes",
-                imageSrc: "filosofo.png"
+                imageSrc: "filosofo.png" // caminho para a imagem relacionada à pergunta
             },
             {
                 question: "Em que ordem surgiram os modelos atômicos?",
@@ -70,72 +70,78 @@
         ];
 
         function displayQuestion() {
+            // obter elementos com IDs específicos.
             const questionElement = document.getElementById("question");
             const questionImageElement = document.getElementById("question-image");
             const optionsElement = document.getElementById("options");
 
-            const currentQuestionObj = questions[currentQuestion];
-            questionElement.innerHTML = `Pergunta ${currentQuestion + 1}: ${currentQuestionObj.question}`;
-            questionImageElement.src = currentQuestionObj.imageSrc;
+            const currentQuestionObj = questions[currentQuestion]; // obtém o objeto de pergunta atual com base na variável currentQuestion.
+            questionElement.innerHTML = `Pergunta ${currentQuestion + 1}: ${currentQuestionObj.question}`; // atualiza o elemento HTML para a proxima pergunta
+            questionImageElement.src = currentQuestionObj.imageSrc; // troca para a nova imagem
 
-            optionsElement.innerHTML = "";
+            optionsElement.innerHTML = "";  //  limpa os elementos das questões anteriores para receber uma nova questão
 
-            currentQuestionObj.options.forEach((option, index) => {
-        const li = document.createElement("li");
+            // verifica as respostas
+            currentQuestionObj.options.forEach((option, index) => { // itera sobre as opções de resposta da pergunta atual e cria botões para cada uma.
+                const li = document.createElement("li"); // cria um elemento <li> para conter o botão de opção.
 
-        const button = document.createElement("button");
-        button.innerHTML = `<i class="fas ${getIconClass(index)}"></i> ${option}`;
-        button.onclick = () => checkAnswer(option);
+                const button = document.createElement("button"); // cria um elemento <button> para representar a opção de resposta
+                button.innerHTML = `<i class="fas ${getIconClass(index)}"></i> ${option}`; // define o conteúdo do botão, que inclui um ícone  e o texto da opção.
+                button.onclick = () => checkAnswer(option); // configura o evento de clique do botão para verificar a resposta 
 
-        li.appendChild(button);
-        optionsElement.appendChild(li);
-    });
+                li.appendChild(button);
+                optionsElement.appendChild(li); // anexa o elemento <li> ao elemento que conterá todas as opções.
+            });
         }
 
-        function getIconClass(index) {
-    const icons = ["fa-square", "fa-play", "fa-circle", "fa-star"];
-    return icons[index];
-}
+        function getIconClass(index) { // recebe um número index como entrada e retorna uma classe de ícone FontAwesome correspondente a esse índice
+            const icons = ["fa-square", "fa-play", "fa-circle", "fa-star"];
+            return icons[index];
+        }
 
-        function checkAnswer(selectedOption) {
-            if (selectedOption === questions[currentQuestion].answer) {
-                score += 10;
-                document.getElementById("result").textContent = "Resposta correta! Pontuação: " + score;
+        function checkAnswer(selectedOption) { // função para escolher uma opção de resposta
+            if (selectedOption === questions[currentQuestion].answer) { // verifica se a opção escolhida é igual à resposta da pergunta atual.
+                // se a resposta estiver correta
+                score += 10;  // aumenta a pontuação do jogador em 10 pontos.
+                document.getElementById("result").textContent = "Resposta correta! Pontuação: " + score;// atualiza o elemento HTML com a mensagem "Resposta correta! e a Pontuação: " seguida da pontuação atual
                 nextQuestion();
             } else {
-                chances--;
-                document.getElementById("result").textContent = "Resposta incorreta! Chances restantes: " + chances;
+                // se a resposta estiver incorreta:
+                chances--; // diminui as chances do jogador em 1.
+                document.getElementById("result").textContent = "Resposta incorreta! Chances restantes: " + chances;  // atualiza o elemento HTML com a mensagem "Resposta incorreta! e Chances restantes: " seguida do número de chances restantes.
                 if (chances === 0) {
+                    // se o jogador não tiver mais chances, o jogo acaba.
                     gameOver();
                 }
             }
         }
 
-        function nextQuestion() {
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                displayQuestion();
-                document.getElementById("result").textContent = "";
+        function nextQuestion() {// esta função para quando aresposta estiver certa ou passar para proxima pergunta
+            currentQuestion++; // incrementa o valor da variável currentQuestion em 1 para passar para a próxima pergunta
+            if (currentQuestion < questions.length) { // verifica se ainda há perguntas não respondidas.
+                // se ainda houver perguntas:
+                displayQuestion(); // exibe a próxima pergunta na tela chamando a função displayQuestion().
+                document.getElementById("result").textContent = ""; // limpa qualquer mensagem de resultado anterior definindo o conteúdo do elemento HTML "result" como vazio.
             } else {
-                gameOver();
+                // se todas as perguntas foram respondidas:
+                gameOver(); // chama a função gameOver() para encerrar o jogo ou mostrar a tela de fim de jogo.
             }
         }
-
-        function gameOver() {
-            document.getElementById("question").textContent = "Quiz encerrado!";
-            document.getElementById("options").innerHTML = "";
-            document.getElementById("result").textContent = "Pontuação final: " + score;
+        
+        function gameOver() { // função quando o jogo termina.
+            document.getElementById("question").textContent = "Quiz encerrado!"; // define o texto da pergunta como "Quiz encerrado!".
+            document.getElementById("options").innerHTML = ""; // remove todas as opções de resposta, tornando o elemento HTML com ID "options" vazio.
+            document.getElementById("result").textContent = "Pontuação final: " + score; // exibe a pontuação final do jogador no elemento HTML com ID "result".
         }
-
-        displayQuestion();
 
         const restartButton = document.getElementById('restartQuiz');
         restartButton.addEventListener('click', () => {
             if (confirm('Deseja reiniciar o quiz?')) {
-                currentQuestionIndex = 0;
-                chances = 2;
-                score = 0;
-                loadQuestion();
+                currentQuestion = 0; // Redefina a pergunta atual para a primeira pergunta
+                chances = 2; // Redefina as chances
+                score = 0; // Redefina a pontuação
+                displayQuestion(); // Carregue a primeira pergunta novamente
+                document.getElementById("result").textContent = ""; // Limpe o resultado anterior
             }
         });
     </script>
